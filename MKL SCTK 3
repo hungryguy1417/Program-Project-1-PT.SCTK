@@ -1,0 +1,56 @@
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+# ===============================
+# 1. DATASET
+# ===============================
+data = [
+    [21,0.1,0.14],[21,0.2,0.21],[21,0.3,0.26],[21,0.4,0.29],[21,0.5,0.33],
+    [21,0.6,0.36],[21,0.7,0.39],[21,0.8,0.41],[21,0.9,0.44],[21,1,0.46],
+    [21,2,0.65],[21,3,0.8],[21,4,0.93],
+
+    [28,0.1,0.17],[28,0.2,0.245],[28,0.3,0.3],[28,0.4,0.35],[28,0.5,0.39],
+    [28,0.6,0.42],[28,0.7,0.45],[28,0.8,0.48],[28,0.9,0.51],[28,1,0.54],
+    [28,2,0.75],[28,3,0.94],[28,4,1.1],
+
+    [35,0.1,0.19],[35,0.2,0.275],[35,0.3,0.345],[35,0.4,0.385],[35,0.5,0.43],
+    [35,0.6,0.47],[35,0.7,0.5],[35,0.8,0.54],[35,0.9,0.57],[35,1,0.6],
+    [35,2,0.85],[35,3,1.05],[35,4,1.2],
+
+    [44,0.1,0.215],[44,0.2,0.3],[44,0.3,0.375],[44,0.4,0.43],[44,0.5,0.48],
+    [44,0.6,0.52],[44,0.7,0.57],[44,0.8,0.6],[44,0.9,0.63],[44,1,0.66],
+    [44,2,0.94],[44,3,1.15],[44,4,1.35],
+]
+
+df = pd.DataFrame(data, columns=['DN', 'Pressure', 'Velocity'])
+
+# ===============================
+# 2. TRAIN REGRESI LINEAR
+# ===============================
+X = df[['DN', 'Pressure']]
+y = df['Velocity']
+
+model = LinearRegression()
+model.fit(X, y)
+
+a = model.coef_[0]   # DN
+b = model.coef_[1]   # Pressure
+c = model.intercept_
+
+print("=== MODEL SIAP ===")
+print(f"Velocity = ({a:.6f} * DN) + ({b:.6f} * Pressure) + ({c:.6f})")
+
+# ===============================
+# 3. SIMULASI INPUT MANUAL
+# ===============================
+while True:
+    print("\n--- SIMULASI PREDIKSI VELOCITY ---")
+    dn = float(input("Masukkan DN pipa (mm): "))
+    pressure = float(input("Masukkan Pressure: "))
+
+    velocity = (a * dn) + (b * pressure) + c
+    print(f"➡ Prediksi Velocity = {velocity:.3f} m/s")
+
+    ulang = input("Ulangi simulasi? (y/n): ")
+    if ulang.lower() != 'y':
+        break
